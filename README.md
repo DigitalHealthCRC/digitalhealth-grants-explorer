@@ -7,7 +7,7 @@ A web page for filtering healthcare funding opportunities. This tool helps resea
 
 ```
 healthcare-grants-explorer/
-├── main.html              # Main grants explorer interface
+├── index.html             # Main grants explorer interface
 ├── info.html              # Funding sources information page
 ├── style.css              # Complete styling for both pages
 ├── app.js                 # Main application logic and functionality
