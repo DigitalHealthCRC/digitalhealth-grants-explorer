@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Grants Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="aurora-container">
+        <canvas id="aurora-canvas"></canvas>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>Healthcare Grants Explorer</h1>
+                <p>Discover funding opportunities for health and medical research</p>
+            </div>
+            <div class="header-right">
+                <img src="https://digitalhealthcrc.com/wp-content/uploads/2022/09/DHCRC-Logo-Horizontal-Reversed-Colour-300x101.png" alt="Digital Health CRC Logo" class="dhcrc-logo">
+            </div>
+        </div>
+
+        <div class="intro-section">
+            <p>This page presents search results of active funding opportunities relevant to health workforce, digital health, digital transformation, healthcare technology, and innovation. It brings together programs from government (federal, state), philanthropic foundations, corporate sponsors, and universities, covering both organisations (universities, start-ups, non-profits) and individuals (researchers, clinicians). The listed opportunities are either currently open or opening within the next 12 months (as of 13 August 2025), with a funding scale starting from AUD $10,000+.</p>
+            <div class="intro-actions">
+                <a href="info.html" class="read-more-btn">Read More About Funding Sources</a>
+            </div>
+        </div>
+
+        <div class="filters-container">
+            <div class="filters-section">
+                <div class="filter-section-header">
+                    <h3 class="filter-section-title">Filter</h3>
+                </div>
+                <div class="filter-row filter-row-with-border">
+                    <div class="filter-group">
+                        <label class="filter-label">Min Amount (AUD)</label>
+                        <input type="number" id="minAmountFilter" class="filter-input" placeholder="10,000" min="0" step="1000">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Max Amount (AUD)</label>
+                        <input type="number" id="maxAmountFilter" class="filter-input" placeholder="50,000,000" step="1000000">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Complexity</label>
+                        <select id="complexityFilter" class="filter-input">
+                            <option value="">All</option>
+                            <option value="Simple">Simple</option>
+                            <option value="Moderate">Moderate</option>
+                            <option value="Complex">Complex</option>
+                            <option value="Very Complex">Very Complex</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Administering Body</label>
+                        <select id="bodyFilter" class="filter-input">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Filter by Tags</label>
+                    <div id="tagFilters" class="tag-filters">
+                        <!-- Tags will be dynamically loaded here -->
+                    </div>
+                </div>
+                
+                <div class="filter-row filter-row-with-border">
+                    <div class="filter-group">
+                        <label class="filter-label">Search Keywords</label>
+                        <input type="text" id="keywordFilter" class="filter-input" placeholder="Search grant names, purposes, tags...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Sort By</label>
+                        <select id="sortFilter" class="filter-input">
+                            <option value="">Default</option>
+                            <option value="deadline">Closest Deadline</option>
+                            <option value="amount">Funding Amount (High to Low)</option>
+                            <option value="complexity">Complexity (Simple to Complex)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <!-- Empty for spacing -->
+                    </div>
+                    
+                    <div class="filter-group">
+                        <!-- Empty for spacing -->
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <div class="filter-buttons">
+                        <button id="clearFilters" class="clear-btn">Clear All Filters</button>
+                        <button id="exportCSV" class="export-btn">Export as CSV</button>
+                    </div>
+                    <div class="results-count">
+                        <span id="resultsCount">0</span> grants found
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grants-grid" id="grantsGrid">
+            <!-- Grants will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Modal for grant details -->
+    <div id="grantModal" class="modal">
+        <div class="modal-content">
+            <!-- Modal content will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Aurora animation (from original template)
+        const canvas = document.getElementById('aurora-canvas');
+        const ctx = canvas.getContext('2d');
+        const colorStops = ['#bb04a0', '#4a018b', '#5227FF'];
+        const amplitude = 0.3;
+        const frequency = 0.01;
+        const speed = 0.005;
+        const layerOpacity = 0.3;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function noise(x, y, t) {
+            const n = Math.sin(x * frequency + t) * Math.cos(y * frequency + t * 0.8) +
+                     Math.sin(x * frequency * 2 - t * 1.2) * Math.cos(y * frequency * 3 + t) * 0.5 +
+                     Math.sin(x * frequency * 3 + t * 0.5) * Math.cos(y * frequency - t * 1.5) * 0.25;
+            return (n + 1.5) / 3;
+        }
+
+        function interpolateColor(color1, color2, factor) {
+            const r1 = parseInt(color1.substr(1, 2), 16);
+            const g1 = parseInt(color1.substr(3, 2), 16);
+            const b1 = parseInt(color1.substr(5, 2), 16);
+            
+            const r2 = parseInt(color2.substr(1, 2), 16);
+            const g2 = parseInt(color2.substr(3, 2), 16);
+            const b2 = parseInt(color2.substr(5, 2), 16);
+            
+            const r = Math.round(r1 + (r2 - r1) * factor);
+            const g = Math.round(g1 + (g2 - g1) * factor);
+            const b = Math.round(b1 + (b2 - b1) * factor);
+            
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        let time = 0;
+        function drawAurora() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let layer = 0; layer < 3; layer++) {
+                ctx.globalAlpha = layerOpacity;
+                
+                for (let x = 0; x < canvas.width; x += 5) {
+                    const noiseValue = noise(x, layer * 100, time);
+                    const height = noiseValue * canvas.height * amplitude;
+                    const y = canvas.height * 0.3 + height + layer * 50;
+                    
+                    const colorFactor = x / canvas.width;
+                    let color;
+                    if (colorFactor < 0.5) {
+                        color = interpolateColor(colorStops[0], colorStops[1], colorFactor * 2);
+                    } else {
+                        color = interpolateColor(colorStops[1], colorStops[2], (colorFactor - 0.5) * 2);
+                    }
+                    
+                    const gradient = ctx.createLinearGradient(x, y - height, x, y + height);
+                    gradient.addColorStop(0, 'transparent');
+                    gradient.addColorStop(0.5, color);
+                    gradient.addColorStop(1, 'transparent');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x, y - height, 5, height * 2);
+                }
+            }
+            
+            time += speed;
+            requestAnimationFrame(drawAurora);
+        }
+        
+        drawAurora();
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
