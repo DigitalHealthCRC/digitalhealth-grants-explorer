@@ -12,7 +12,7 @@
     </div>
     
     <div class="container">
-        <div class="header">
+        <header class="header">
             <div class="header-left">
                 <h1>Healthcare Grants Explorer</h1>
                 <p>Discover funding opportunities for health and medical research</p>
@@ -20,97 +20,99 @@
             <div class="header-right">
                 <img src="https://digitalhealthcrc.com/wp-content/uploads/2022/09/DHCRC-Logo-Horizontal-Reversed-Colour-300x101.png" alt="Digital Health CRC Logo" class="dhcrc-logo">
             </div>
-        </div>
+        </header>
 
-        <div class="intro-section">
-            <p>This page presents search results of active funding opportunities relevant to health workforce, digital health, digital transformation, healthcare technology, and innovation. It brings together programs from government (federal, state), philanthropic foundations, corporate sponsors, and universities, covering both organisations (universities, start-ups, non-profits) and individuals (researchers, clinicians). The listed opportunities are either currently open or opening within the next 12 months (as of 13 August 2025), with a funding scale starting from AUD $10,000+.</p>
-            <div class="intro-actions">
-                <a href="info.html" class="read-more-btn">Read More About Funding Sources</a>
-            </div>
-        </div>
+        <main>
+            <section class="intro-section">
+                <p>This page presents search results of active funding opportunities relevant to health workforce, digital health, digital transformation, healthcare technology, and innovation. It brings together programs from government (federal, state), philanthropic foundations, corporate sponsors, and universities, covering both organisations (universities, start-ups, non-profits) and individuals (researchers, clinicians). The listed opportunities are either currently open or opening within the next 12 months (as of 13 August 2025), with a funding scale starting from AUD $10,000+.</p>
+                <div class="intro-actions">
+                    <a href="info.html" class="read-more-btn">Read More About Funding Sources</a>
+                </div>
+            </section>
 
-        <div class="filters-container">
-            <div class="filters-section">
-                <div class="filter-section-header">
-                    <h3 class="filter-section-title">Filter</h3>
-                </div>
-                <div class="filter-row filter-row-with-border">
-                    <div class="filter-group">
-                        <label class="filter-label">Min Amount (AUD)</label>
-                        <input type="number" id="minAmountFilter" class="filter-input" placeholder="10,000" min="0" step="1000">
+            <section class="filters-container">
+                <div class="filters-section">
+                    <div class="filter-section-header">
+                        <h3 class="filter-section-title">Filter</h3>
                     </div>
-                    
-                    <div class="filter-group">
-                        <label class="filter-label">Max Amount (AUD)</label>
-                        <input type="number" id="maxAmountFilter" class="filter-input" placeholder="50,000,000" step="1000000">
+                    <div class="filter-row filter-row-with-border">
+                        <div class="filter-group">
+                            <label class="filter-label" for="minAmountFilter">Min Amount (AUD)</label>
+                            <input type="number" id="minAmountFilter" class="filter-input" placeholder="10,000" min="0" step="1000">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="maxAmountFilter">Max Amount (AUD)</label>
+                            <input type="number" id="maxAmountFilter" class="filter-input" placeholder="50,000,000" step="1000000">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="complexityFilter">Complexity</label>
+                            <select id="complexityFilter" class="filter-input">
+                                <option value="">All</option>
+                                <option value="Simple">Simple</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Complex">Complex</option>
+                                <option value="Very Complex">Very Complex</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="bodyFilter">Administering Body</label>
+                            <select id="bodyFilter" class="filter-input">
+                                <option value="">All</option>
+                            </select>
+                        </div>
                     </div>
-                    
-                    <div class="filter-group">
-                        <label class="filter-label">Complexity</label>
-                        <select id="complexityFilter" class="filter-input">
-                            <option value="">All</option>
-                            <option value="Simple">Simple</option>
-                            <option value="Moderate">Moderate</option>
-                            <option value="Complex">Complex</option>
-                            <option value="Very Complex">Very Complex</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label class="filter-label">Administering Body</label>
-                        <select id="bodyFilter" class="filter-input">
-                            <option value="">All</option>
-                        </select>
-                    </div>
-                </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Filter by Tags</label>
-                    <div id="tagFilters" class="tag-filters">
-                        <!-- Tags will be dynamically loaded here -->
-                    </div>
-                </div>
-                
-                <div class="filter-row filter-row-with-border">
                     <div class="filter-group">
-                        <label class="filter-label">Search Keywords</label>
-                        <input type="text" id="keywordFilter" class="filter-input" placeholder="Search grant names, purposes, tags...">
+                        <label class="filter-label" id="tagFilters-label" for="tagFilters">Filter by Tags</label>
+                        <div id="tagFilters" class="tag-filters" tabindex="0" role="region" aria-labelledby="tagFilters-label">
+                            <!-- Tags will be dynamically loaded here -->
+                        </div>
                     </div>
                     
-                    <div class="filter-group">
-                        <label class="filter-label">Sort By</label>
-                        <select id="sortFilter" class="filter-input">
-                            <option value="">Default</option>
-                            <option value="deadline">Closest Deadline</option>
-                            <option value="amount">Funding Amount (High to Low)</option>
-                            <option value="complexity">Complexity (Simple to Complex)</option>
-                        </select>
+                    <div class="filter-row filter-row-with-border">
+                        <div class="filter-group">
+                            <label class="filter-label" for="keywordFilter">Search Keywords</label>
+                            <input type="text" id="keywordFilter" class="filter-input" placeholder="Search grant names, purposes, tags...">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label" for="sortFilter">Sort By</label>
+                            <select id="sortFilter" class="filter-input">
+                                <option value="">Default</option>
+                                <option value="deadline">Closest Deadline</option>
+                                <option value="amount">Funding Amount (High to Low)</option>
+                                <option value="complexity">Complexity (Simple to Complex)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <!-- Empty for spacing -->
+                        </div>
+                        
+                        <div class="filter-group">
+                            <!-- Empty for spacing -->
+                        </div>
                     </div>
                     
-                    <div class="filter-group">
-                        <!-- Empty for spacing -->
-                    </div>
-                    
-                    <div class="filter-group">
-                        <!-- Empty for spacing -->
-                    </div>
-                </div>
-                
-                <div class="filter-actions">
-                    <div class="filter-buttons">
-                        <button id="clearFilters" class="clear-btn">Clear All Filters</button>
-                        <button id="exportCSV" class="export-btn">Export as CSV</button>
-                    </div>
-                    <div class="results-count">
-                        <span id="resultsCount">0</span> grants found
+                    <div class="filter-actions">
+                        <div class="filter-buttons">
+                            <button id="clearFilters" class="clear-btn">Clear All Filters</button>
+                            <button id="exportCSV" class="export-btn">Export as CSV</button>
+                        </div>
+                        <div class="results-count">
+                            <span id="resultsCount">0</span> grants found
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <div class="grants-grid" id="grantsGrid">
-            <!-- Grants will be dynamically loaded here -->
-        </div>
+            <section class="grants-grid" id="grantsGrid">
+                <!-- Grants will be dynamically loaded here -->
+            </section>
+        </main>
     </div>
 
     <!-- Modal for grant details -->

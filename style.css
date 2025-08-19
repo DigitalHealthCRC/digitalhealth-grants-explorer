@@ -541,6 +541,13 @@ select.filter-input option {
     padding: 15px 0;
 }
 
+.tag-filters:focus {
+    outline: 2px solid rgba(255, 0, 110, 0.6);
+    outline-offset: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
 .filter-tag {
     background: rgba(255, 255, 255, 0.1);
     color: #888888;
@@ -551,6 +558,12 @@ select.filter-input option {
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
+}
+
+.filter-tag:focus {
+    outline: 2px solid rgba(255, 0, 110, 0.6);
+    outline-offset: 2px;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .filter-tag:hover {

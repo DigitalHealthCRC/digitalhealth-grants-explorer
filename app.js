@@ -460,7 +460,16 @@ class GrantsApp {
             tagElement.className = 'filter-tag';
             tagElement.textContent = tag;
             tagElement.dataset.tag = tag;
+            tagElement.tabIndex = 0;
+            tagElement.setAttribute('role', 'button');
+            tagElement.setAttribute('aria-pressed', 'false');
             tagElement.addEventListener('click', () => this.toggleTagFilter(tag));
+            tagElement.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.toggleTagFilter(tag);
+                }
+            });
             tagFiltersContainer.appendChild(tagElement);
         });
     }
@@ -485,8 +494,10 @@ class GrantsApp {
             const tag = element.dataset.tag;
             if (this.filters.selectedTags.has(tag)) {
                 element.classList.add('active');
+                element.setAttribute('aria-pressed', 'true');
             } else {
                 element.classList.remove('active');
+                element.setAttribute('aria-pressed', 'false');
             }
         });
     }
