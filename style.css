@@ -14,6 +14,47 @@ body {
     overflow-x: hidden;
 }
 
+/* Screen Reader Only Content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Skip Links */
+.skip-links {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    z-index: 1000;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 10px;
+    background: #000000;
+    color: #ffffff;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 2px solid rgba(255, 0, 110, 0.6);
+    border-radius: 4px;
+    font-weight: 600;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 10px;
+    outline: 2px solid rgba(255, 0, 110, 0.8);
+    outline-offset: 2px;
+}
+
 .aurora-container {
     position: fixed;
     top: 0;
@@ -264,7 +305,7 @@ body {
 }
 
 .filter-input::placeholder {
-    color: #666666;
+    color: #999999;
 }
 
 select.filter-input {
@@ -364,16 +405,12 @@ select.filter-input option {
     transition: background 0.3s ease; /* Add smooth transition */
 }
 
-.grant-card:hover::before {
+.grant-card:hover::before,
+.grant-card:focus::before {
     background: linear-gradient(135deg, #ff006e, #8338ec, #3a86ff);
+    height: 3px;
 }
 
-.grant-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 0, 110, 0.4);
-    box-shadow: 0 20px 40px rgba(255, 0, 110, 0.2);
-}
 
 .grant-title {
     font-size: 1.3em;
@@ -384,14 +421,21 @@ select.filter-input option {
     transition: color 0.3s ease; /* Add smooth transition */
 }
 
-.grant-card:hover .grant-title {
+.grant-card:hover .grant-title,
+.grant-card:focus .grant-title {
     color: #ffffff;
 }
-.grant-card:hover {
+
+.grant-card:hover, .grant-card:focus {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 0, 110, 0.4);
     box-shadow: 0 20px 40px rgba(255, 0, 110, 0.2);
+}
+
+.grant-card:focus {
+    outline: 2px solid rgba(255, 0, 110, 0.6);
+    outline-offset: 2px;
 }
 
 
@@ -410,11 +454,11 @@ select.filter-input option {
 }
 
 .click-hint {
-    color: #888888;
+    color: #b8b8b8;
     font-size: 0.8em;
     font-style: italic;
     margin-top: 10px;
-    opacity: 0.7;
+    opacity: 0.8;
 }
 
 /* Modal Styles */
@@ -550,7 +594,7 @@ select.filter-input option {
 
 .filter-tag {
     background: rgba(255, 255, 255, 0.1);
-    color: #888888;
+    color: #b8b8b8;
     padding: 6px 12px;
     border-radius: 15px;
     font-size: 0.85em;
@@ -687,7 +731,7 @@ select.filter-input option {
 .no-grants {
     text-align: center;
     padding: 60px 20px;
-    color: #888888;
+    color: #b8b8b8;
     font-size: 1.2em;
 }
 
@@ -701,7 +745,7 @@ select.filter-input option {
 .loading {
     text-align: center;
     padding: 60px 20px;
-    color: #888888;
+    color: #b8b8b8;
 }
 
 .loading-spinner {
@@ -729,7 +773,7 @@ select.filter-input option {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #555555;
+    background: #666666;
     border-radius: 4px;
 }
 

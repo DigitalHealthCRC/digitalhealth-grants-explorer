@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Skip navigation links -->
+    <div class="skip-links">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        <a href="#grantsGrid" class="skip-link">Skip to grants</a>
+    </div>
+    
     <div class="aurora-container" role="presentation" aria-hidden="true">
         <canvas id="aurora-canvas"></canvas>
     </div>
@@ -22,7 +28,7 @@
             </div>
         </header>
 
-        <main>
+        <main id="main-content">
             <section class="intro-section">
                 <p>This page presents search results of active funding opportunities relevant to health workforce, digital health, digital transformation, healthcare technology, and innovation. It brings together programs from government (federal, state), philanthropic foundations, corporate sponsors, and universities, covering both organisations (universities, start-ups, non-profits) and individuals (researchers, clinicians). The listed opportunities are either currently open or opening within the next 12 months (as of 13 August 2025), with a funding scale starting from AUD $10,000+.</p>
                 <div class="intro-actions">
@@ -38,12 +44,14 @@
                     <div class="filter-row filter-row-with-border">
                         <div class="filter-group">
                             <label class="filter-label" for="minAmountFilter">Min Amount (AUD)</label>
-                            <input type="number" id="minAmountFilter" class="filter-input" placeholder="10,000" min="0" step="1000">
+                            <input type="number" id="minAmountFilter" class="filter-input" placeholder="10,000" min="0" step="1000" aria-describedby="min-amount-help">
+                            <div id="min-amount-help" class="sr-only">Enter minimum funding amount in Australian dollars</div>
                         </div>
                         
                         <div class="filter-group">
                             <label class="filter-label" for="maxAmountFilter">Max Amount (AUD)</label>
-                            <input type="number" id="maxAmountFilter" class="filter-input" placeholder="50,000,000" step="1000000">
+                            <input type="number" id="maxAmountFilter" class="filter-input" placeholder="50,000,000" step="1000000" aria-describedby="max-amount-help">
+                            <div id="max-amount-help" class="sr-only">Enter maximum funding amount in Australian dollars</div>
                         </div>
                         
                         <div class="filter-group">
@@ -75,7 +83,8 @@
                     <div class="filter-row filter-row-with-border">
                         <div class="filter-group">
                             <label class="filter-label" for="keywordFilter">Search Keywords</label>
-                            <input type="text" id="keywordFilter" class="filter-input" placeholder="Search grant names, purposes, tags...">
+                            <input type="text" id="keywordFilter" class="filter-input" placeholder="Search grant names, purposes, tags..." aria-describedby="keyword-help">
+                            <div id="keyword-help" class="sr-only">Search across grant names, purposes, administering bodies, and tags</div>
                         </div>
                         
                         <div class="filter-group">
@@ -102,7 +111,7 @@
                             <button id="clearFilters" class="clear-btn">Clear All Filters</button>
                             <button id="exportCSV" class="export-btn">Export as CSV</button>
                         </div>
-                        <div class="results-count">
+                        <div class="results-count" aria-live="polite" aria-atomic="true">
                             <span id="resultsCount">0</span> grants found
                         </div>
                     </div>
@@ -116,11 +125,14 @@
     </div>
 
     <!-- Modal for grant details -->
-    <div id="grantModal" class="modal">
+    <div id="grantModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
         <div class="modal-content">
             <!-- Modal content will be dynamically loaded here -->
         </div>
     </div>
+
+    <!-- Screen reader announcements -->
+    <div id="screen-reader-announcements" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
 
     <script>
         // Aurora animation (from original template)

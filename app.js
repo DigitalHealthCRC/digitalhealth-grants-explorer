@@ -570,6 +570,10 @@ class GrantsApp {
         
         this.renderGrants();
         this.updateResultsCount();
+        
+        // Announce filter change to screen readers
+        const resultCount = this.filteredGrants.length;
+        this.announceToScreenReader(`Filters applied. ${resultCount} grants found.`);
     }
     
     clearAllFilters() {
@@ -598,6 +602,9 @@ class GrantsApp {
         this.filteredGrants = [...this.grants];
         this.renderGrants();
         this.updateResultsCount();
+        
+        // Announce filter clear to screen readers
+        this.announceToScreenReader(`All filters cleared. ${this.filteredGrants.length} grants shown.`);
     }
     
     formatFunding(funding) {
@@ -628,13 +635,26 @@ class GrantsApp {
     
     createGrantCard(grant, index) {
         return `
-            <div class="grant-card" data-grant-index="${index}" onclick="grantsApp.showGrantModal(${index})">
+            <div class="grant-card" 
+                 data-grant-index="${index}" 
+                 tabindex="0"
+                 role="button"
+                 aria-label="Grant: ${grant.grant_name} - ${grant.administering_body}. Press Enter for details"
+                 onclick="grantsApp.showGrantModal(${index})"
+                 onkeydown="grantsApp.handleCardKeydown(event, ${index})">
                 <div class="grant-title">${grant.grant_name}</div>
                 <div class="grant-body">${grant.administering_body}</div>
                 <div class="grant-funding">${this.formatFunding(grant.funding)}</div>
-                <div class="click-hint">Click for details</div>
+                <div class="click-hint">Click or press Enter for details</div>
             </div>
         `;
+    }
+
+    handleCardKeydown(event, index) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.showGrantModal(index);
+        }
     }
 
     showGrantModal(index) {
@@ -648,10 +668,10 @@ class GrantsApp {
         // Create modal content
         const modalContent = `
             <div class="modal-header">
-                <h2>${grant.grant_name}</h2>
-                <button class="modal-close" onclick="grantsApp.closeGrantModal()">&times;</button>
+                <h2 id="modal-title">${grant.grant_name}</h2>
+                <button class="modal-close" onclick="grantsApp.closeGrantModal()" aria-label="Close modal">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modal-description">
                 <div class="modal-section">
                     <strong>Administering Body:</strong> ${grant.administering_body}
                 </div>
@@ -726,12 +746,90 @@ class GrantsApp {
         modalContentElement.innerHTML = modalContent;
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        
+        // Store the currently focused element for restoration later
+        this.previouslyFocusedElement = document.activeElement;
+        
+        // Focus the close button when modal opens
+        setTimeout(() => {
+            const closeButton = modal.querySelector('.modal-close');
+            if (closeButton) {
+                closeButton.focus();
+            }
+        }, 100);
+        
+        // Setup focus trapping
+        this.setupFocusTrap(modal);
+        
+        // Announce modal opening to screen readers
+        this.announceToScreenReader(`Grant details modal opened for ${grant.grant_name}`);
     }
 
     closeGrantModal() {
         const modal = document.getElementById('grantModal');
         modal.style.display = 'none';
         document.body.style.overflow = 'auto'; // Restore scrolling
+        
+        // Remove focus trap
+        this.removeFocusTrap();
+        
+        // Restore focus to the previously focused element
+        if (this.previouslyFocusedElement) {
+            this.previouslyFocusedElement.focus();
+            this.previouslyFocusedElement = null;
+        }
+        
+        // Announce modal closing to screen readers
+        this.announceToScreenReader('Grant details modal closed');
+    }
+
+    setupFocusTrap(modal) {
+        // Get all focusable elements within the modal
+        this.focusableElements = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        this.firstFocusableElement = this.focusableElements[0];
+        this.lastFocusableElement = this.focusableElements[this.focusableElements.length - 1];
+
+        // Add event listener for tab trapping
+        this.trapFocusHandler = (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    // Shift + Tab
+                    if (document.activeElement === this.firstFocusableElement) {
+                        this.lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    // Tab
+                    if (document.activeElement === this.lastFocusableElement) {
+                        this.firstFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        };
+        
+        modal.addEventListener('keydown', this.trapFocusHandler);
+    }
+
+    removeFocusTrap() {
+        const modal = document.getElementById('grantModal');
+        if (this.trapFocusHandler) {
+            modal.removeEventListener('keydown', this.trapFocusHandler);
+            this.trapFocusHandler = null;
+        }
+    }
+
+    announceToScreenReader(message) {
+        const announcer = document.getElementById('screen-reader-announcements');
+        if (announcer) {
+            announcer.textContent = message;
+            // Clear the message after announcement
+            setTimeout(() => {
+                announcer.textContent = '';
+            }, 1000);
+        }
     }
     
     renderGrants() {
@@ -761,6 +859,7 @@ class GrantsApp {
     exportToCSV() {
         if (this.filteredGrants.length === 0) {
             alert('No grants to export. Please adjust your filters.');
+            this.announceToScreenReader('Export failed. No grants to export.');
             return;
         }
 
@@ -823,6 +922,9 @@ class GrantsApp {
             
             // Show success message
             this.showExportSuccess(this.filteredGrants.length, filename);
+            
+            // Announce export success to screen readers
+            this.announceToScreenReader(`CSV export successful. ${this.filteredGrants.length} grants exported to ${filename}`);
         } else {
             alert('Your browser does not support automatic downloads. Please try a different browser.');
         }
