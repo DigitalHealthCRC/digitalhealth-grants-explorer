@@ -1,6 +1,6 @@
 # Healthcare Grants Explorer
 
-A web page for filtering healthcare funding opportunities. This tool helps researchers find relevant grants across health workforce, digital health, healthcare technology, and innovation domains.
+A [web page](https://digitalhealthcrc.github.io/digitalhealth-grants-explorer/) for filtering healthcare funding opportunities. This tool helps researchers find relevant grants across health workforce, digital health, healthcare technology, and innovation domains.
 
 
 ## Project Structure
