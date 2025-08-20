@@ -1,4 +1,4 @@
-name: Auto Deploy Pages
+name: Deploy Static Site to Pages
 
 on:
   push:
@@ -30,6 +30,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # Upload entire repository as static files
           path: '.'
       
       - name: Deploy to GitHub Pages
