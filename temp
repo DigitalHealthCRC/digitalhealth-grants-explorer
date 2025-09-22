@@ -1,0 +1,34 @@
+I want you to explore the following webpage and see if it lists some available grants. Make a list of all the grants and provide the following information if it is available:
+
+- Grant Name: Name or title of the grant, Example: "MRFF 2025 Cardiovascular Health Grant Opportunity (GO7554)" grantPageText 
+
+- Administering Body: The organisation providing the grant, Example: "Australian Government Department of Health"
+
+- Grant Purpose: "Any listed purpose of the grant, Example: "Grow Australia's cyber security industry by supporting innovative projects that enhance cyber capabilities, foster collaboration, and drive industry growth"
+
+- Application Deadline: the dead line for the application, Example: "1 September 2025 (5pm AEST)"
+
+- Funding Amount: The funding amount of the grant, Example: "AUD $50,000"
+
+- Co-contribution Requirements: use free text to say if there are any co-contribution requirements for this grant, it could also be "none required" or "not specified". Example: "Mandatory matched funding (cash) 
+from the applicant"
+
+- Eligibility Criteria: criteria listed for the grant, it could include education level, ethnicity, nationality, organisation type, experience, etc. Example: "Australian and Indigenous Australian individuals undertaking full-time graduate-level study at an accredited US educational institution"
+
+- Assessment Criteria: Any listed criteria listed for assessment, Example : "Academic excellence, innovation potential, and contribution to global challenges"
+
+- Application Complexity: considering the grant amount, reputation, number of application for this type grant, requirements, what would be your judgement and reasoning be regarding the complexity, write in one  sentence:  Example: "Complex - requires detailed technical, financial, and commercial proposals"
+
+- Web Link: this would be the URL of the page from which the text is extracted from, Example: "https://www.health.gov.au/our-work/mrff/grant-opportunities-calendar"
+
+- Level of Complexity: Considering your response for  "Application Complexity", map in into one the 5 choices below: "Low", "Moderate", "Complex", "Very Complex," or "Varies"
+
+
+Please follow the following important notes:
+- provide the output as a json file.
+- You MUST NOT make things up or hallucinate, if the info is not provide, just say "not found" 
+- The only info you can use your own judgment for is defining "Application Complexity" and "Level of Complexity"
+- Always use Australian English, even if the original text is using American English or British English.
+- avoid using Em-dashes and title case.
+
+Here is the link for  the  page: 
