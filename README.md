@@ -63,7 +63,11 @@ We welcome contributions to improve the Healthcare Grants Explorer! Here's how y
 4. Test filtering and display functionality
 
 
-
+## To do
+- connect to grant connect
+- add funding categories
+- add deadline to filter
+- record and share use analytics
 
 <div align="center">
 
