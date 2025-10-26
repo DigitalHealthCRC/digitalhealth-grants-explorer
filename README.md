@@ -7,15 +7,15 @@ A [web page](https://digitalhealthcrc.github.io/digitalhealth-grants-explorer/) 
 
 ```
 healthcare-grants-explorer/
-├── index.html             # Main grants explorer interface
-├── info.html              # Funding sources information page
-├── style.css              # Complete styling for both pages
-├── app.js                 # Main application logic and functionality
-├── data.csv               # Primary grants database (120+ opportunities)
-├── tag_analysis.py        # Python script for tag frequency analysis
-├── complexity.py          # Utility for complexity level mapping
-├── info.md               # Source content for information page
-└── README.md             # This file
+|-- index.html             # Main grants explorer interface
+|-- info.html              # Funding sources information page
+|-- style.css              # Complete styling for both pages
+|-- app.js                 # Main application logic and functionality
+|-- data.csv               # Primary grants database (120+ opportunities)
+|-- tag_analysis.py        # Python script for tag frequency analysis
+|-- complexity.py          # Utility for complexity level mapping
+|-- info.md                # Source content for information page
+|-- README.md              # This file
 ```
 
 ## Technology Stack
@@ -71,7 +71,7 @@ We welcome contributions to improve the Healthcare Grants Explorer! Here's how y
 
 <div align="center">
 
-**Built with ❤️ for the healthcare research community at DHCRC**
+**Built with love for the healthcare research community at DHCRC**
 
 *Last Updated: August 2025*
 

@@ -55,7 +55,7 @@ class GrantScraperConfig:
                 "columns": [
                     "Grant Name","Administering Body","Grant Purpose","Application Deadline",
                     "Funding Amount","Co-contribution Requirements","Eligibility Criteria",
-                    "Assessment Criteria","Application Complexity","Web Link","Level of Complexity"
+                    "Assessment Criteria","Application Complexity","Web Link","Level of Complexity",
                     "discovered_date",
                     "hash_key"  # For deduplication
                 ]

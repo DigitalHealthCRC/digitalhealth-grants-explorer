@@ -6,6 +6,7 @@ Extracts all tags and counts their frequency
 
 import csv
 from collections import Counter
+from pathlib import Path
 
 def analyze_tags(csv_file_path):
     """
@@ -216,7 +217,8 @@ def create_markdown_table(tag_counts):
     return table
 
 def main():
-    csv_file_path = '/mnt/c/Users/Amir/OneDrive - Digital Health CRC Limited/Projects/Anna/code/data.csv'
+    project_root = Path(__file__).resolve().parent
+    csv_file_path = project_root / 'data.csv'
     
     # Analyze tags
     tag_counts = analyze_tags(csv_file_path)

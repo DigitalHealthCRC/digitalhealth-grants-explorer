@@ -838,7 +838,7 @@ class GrantsApp {
         if (this.filteredGrants.length === 0) {
             grantsGrid.innerHTML = `
                 <div class="no-grants">
-                    <div class="no-grants-icon">🔍</div>
+                    <div class="no-grants-icon" aria-hidden="true">No results</div>
                     <p>No grants match your current filters.</p>
                     <p>Try adjusting your search criteria.</p>
                 </div>
@@ -961,7 +961,7 @@ class GrantsApp {
             box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
             font-size: 0.9em;
         `;
-        message.innerHTML = `✓ Exported ${count} grants to ${filename}`;
+        message.textContent = `Exported ${count} grants to ${filename}`;
         
         document.body.appendChild(message);
         
@@ -977,7 +977,7 @@ class GrantsApp {
         const grantsGrid = document.getElementById('grantsGrid');
         grantsGrid.innerHTML = `
             <div class="no-grants">
-                <div class="no-grants-icon">⚠️</div>
+                <div class="no-grants-icon" aria-hidden="true">Error</div>
                 <p>Error loading grants data.</p>
                 <p>Please check that the data.csv file is available.</p>
             </div>
