@@ -27,6 +27,10 @@ def analyze_tags(csv_file_path):
         
         # Iterate through all grants
         for row in csv_reader:
+            # Skip expired grants
+            if row.get('Expired', '').strip().lower() == 'yes':
+                continue
+                
             # Generate tags from grant data (similar to JavaScript implementation)
             tags = generate_tags_from_grant(row)
             all_tags.extend(tags)
