@@ -30,10 +30,10 @@ class GrantsApp {
             const csvText = await response.text();
             this.grants = this.parseCSVToGrants(csvText);
             this.filteredGrants = [...this.grants];
-            
+
             // Update the as-of date based on file last modified
             this.updateDataLastModifiedDate(response);
-            
+
             // Update the as-of date based on file last modified
             this.updateDataLastModifiedDate(response);
         } catch (error) {
@@ -48,7 +48,7 @@ class GrantsApp {
         try {
             const lastModified = response.headers.get('Last-Modified');
             const dateElement = document.getElementById('dataLastUpdated');
-            
+
             if (lastModified && dateElement) {
                 const date = new Date(lastModified);
                 const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -73,7 +73,7 @@ class GrantsApp {
         try {
             const lastModified = response.headers.get('Last-Modified');
             const dateElement = document.getElementById('dataLastUpdated');
-            
+
             if (lastModified && dateElement) {
                 const date = new Date(lastModified);
                 const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -90,7 +90,8 @@ class GrantsApp {
             console.error('Error updating last modified date:', error);
         }
     }
-
+
+
     loadFallbackData() {
         console.error('No fallback data available');
         this.showErrorState();
@@ -263,10 +264,7 @@ class GrantsApp {
             if (adminBody.includes('arc')) tags.push('#ARC');
         }
 
-        // Add complexity tag
-        if (grant.complexity) {
-            tags.push(`#${grant.complexity.replace(/\s+/g, '').replace(/[^\w]/g, '')}`);
-        }
+
 
         return [...new Set(tags)]; // Remove duplicates
     }
@@ -700,12 +698,12 @@ class GrantsApp {
         this.updateTagFilterVisuals();
 
         this.filteredGrants = [...this.grants];
-            
-            // Update the as-of date based on file last modified
-            this.updateDataLastModifiedDate(response);
-            
-            // Update the as-of date based on file last modified
-            this.updateDataLastModifiedDate(response);
+
+        // Update the as-of date based on file last modified
+        this.updateDataLastModifiedDate(response);
+
+        // Update the as-of date based on file last modified
+        this.updateDataLastModifiedDate(response);
         this.renderGrants();
         this.updateResultsCount();
 
