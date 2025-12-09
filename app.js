@@ -26,16 +26,71 @@ class GrantsApp {
 
     async loadGrants() {
         try {
-            const response = await fetch('data.csv');
+            const response = await fetch('data_parsed_complete.csv');
             const csvText = await response.text();
             this.grants = this.parseCSVToGrants(csvText);
             this.filteredGrants = [...this.grants];
+            
+            // Update the as-of date based on file last modified
+            this.updateDataLastModifiedDate(response);
+            
+            // Update the as-of date based on file last modified
+            this.updateDataLastModifiedDate(response);
         } catch (error) {
             console.error('Error loading grants from CSV, trying fallback data:', error);
             this.loadFallbackData();
         }
     }
 
+
+
+    updateDataLastModifiedDate(response) {
+        try {
+            const lastModified = response.headers.get('Last-Modified');
+            const dateElement = document.getElementById('dataLastUpdated');
+            
+            if (lastModified && dateElement) {
+                const date = new Date(lastModified);
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-AU', options);
+                dateElement.textContent = formattedDate;
+            } else if (dateElement) {
+                // Fallback to current date if Last-Modified header not available
+                const date = new Date();
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-AU', options);
+                dateElement.textContent = formattedDate;
+            }
+        } catch (error) {
+            console.error('Error updating last modified date:', error);
+        }
+    }
+
+
+
+
+    updateDataLastModifiedDate(response) {
+        try {
+            const lastModified = response.headers.get('Last-Modified');
+            const dateElement = document.getElementById('dataLastUpdated');
+            
+            if (lastModified && dateElement) {
+                const date = new Date(lastModified);
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-AU', options);
+                dateElement.textContent = formattedDate;
+            } else if (dateElement) {
+                // Fallback to current date if Last-Modified header not available
+                const date = new Date();
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-AU', options);
+                dateElement.textContent = formattedDate;
+            }
+        } catch (error) {
+            console.error('Error updating last modified date:', error);
+        }
+    }
+
     loadFallbackData() {
         console.error('No fallback data available');
         this.showErrorState();
@@ -102,8 +157,27 @@ class GrantsApp {
                     case 'Application Deadline':
                         grant.deadlines = value ? [value] : [];
                         break;
+                    case 'Deadline Date':
+                        grant.deadline_date = value; // Parsed deadline in YYYY-MM-DD format
+                        break;
+                    case 'Deadline Status':
+                        grant.deadline_status = value;
+                        break;
+                    case 'Days Until Deadline':
+                        grant.days_until = value;
+                        break;
                     case 'Funding Amount':
                         grant.funding = { amount: value };
+                        break;
+                    case 'Funding Amount (AUD)':
+                        // Store parsed funding amount as number for filtering/sorting
+                        grant.funding_aud = value ? parseFloat(value.replace(/,/g, '')) : 0;
+                        break;
+                    case 'Funding Currency':
+                        grant.funding_currency = value;
+                        break;
+                    case 'Parsing Confidence':
+                        grant.funding_confidence = value;
                         break;
                     case 'Co-contribution Requirements':
                         grant.co_contribution = value === 'None specified' ? null : value;
@@ -126,7 +200,7 @@ class GrantsApp {
                 }
             }
 
-            // Filter out expired grants
+            // Filter out expired grants (only when Expired = "Yes")
             if (grant.expired) {
                 const expiredValue = grant.expired.toLowerCase().trim();
                 if (expiredValue === 'yes' || expiredValue === 'y') {
@@ -300,6 +374,15 @@ class GrantsApp {
     }
 
     getEarliestDeadline(grant) {
+        // Use parsed deadline date if available
+        if (grant.deadline_date) {
+            const parsed = new Date(grant.deadline_date);
+            if (!isNaN(parsed.getTime())) {
+                return parsed;
+            }
+        }
+
+        // Fallback to parsing from deadline text
         if (!grant.deadlines || grant.deadlines.length === 0) return null;
 
         const dates = grant.deadlines
@@ -514,6 +597,12 @@ class GrantsApp {
     }
 
     extractFundingAmount(grant) {
+        // Use parsed funding amount if available
+        if (grant.funding_aud && grant.funding_aud > 0) {
+            return grant.funding_aud;
+        }
+
+        // Fallback to parsing from funding text
         if (!grant.funding || !grant.funding.amount) return 0;
 
         const amountStr = grant.funding.amount.toLowerCase();
@@ -611,6 +700,12 @@ class GrantsApp {
         this.updateTagFilterVisuals();
 
         this.filteredGrants = [...this.grants];
+            
+            // Update the as-of date based on file last modified
+            this.updateDataLastModifiedDate(response);
+            
+            // Update the as-of date based on file last modified
+            this.updateDataLastModifiedDate(response);
         this.renderGrants();
         this.updateResultsCount();
 
