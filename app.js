@@ -121,14 +121,17 @@ class GrantsApp {
                         grant.references = value ? [value] : [];
                         break;
                     case 'Expired':
-                        grant.expired = value;
+                        grant.expired = value.trim();
                         break;
                 }
             }
 
             // Filter out expired grants
-            if (grant.expired && grant.expired.toLowerCase() === 'yes') {
-                return null;
+            if (grant.expired) {
+                const expiredValue = grant.expired.toLowerCase().trim();
+                if (expiredValue === 'yes' || expiredValue === 'y') {
+                    return null;
+                }
             }
 
             // Generate tags from key fields
