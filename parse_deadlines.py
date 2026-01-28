@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 
 # Current date for reference
-CURRENT_DATE = datetime(2025, 12, 9)
+# Use the current local date/time when the script runs.
+CURRENT_DATE = datetime.now()
 
 def parse_date_string(date_str: str) -> Optional[datetime]:
     """
